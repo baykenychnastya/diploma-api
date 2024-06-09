@@ -1,0 +1,32 @@
+# Base URL
+@BASE_URL = http://localhost:3000/
+//@BASE_URL = https://ep2jllmti2.execute-api.eu-west-2.amazonaws.com
+
+### GET all todos
+GET {{BASE_URL}}/todos
+Content-Type: application/json
+
+### GET todo by ID
+GET {{BASE_URL}}/{todoId}
+Content-Type: application/json
+
+### POST create a new todo
+POST {{BASE_URL}}/  HTTP/1.1
+Content-Type: application/json
+
+{
+  "todo": "New Todo"
+}
+
+### PUT update todo by ID
+PUT {{BASE_URL}}/{todoId}
+Content-Type: application/json
+
+{
+  "title": "Updated Todo",
+  "completed": true
+}
+
+### DELETE todo by ID
+DELETE {{BASE_URL}}/{todoId}
+Content-Type: application/json

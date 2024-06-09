@@ -1,0 +1,145 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Attach by Process ID",
+            "processId": "${command:PickProcess}",
+            "request": "attach",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "type": "node"
+        },
+        {
+            "name": "Launch Program",
+            "program": "${workspaceFolder}/src/addTodo.ts",
+            "request": "launch",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "type": "node"
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Debug Serverless Offline New",
+            "program": "${workspaceFolder}/node_modules/serverless/bin/serverless",
+            "args": [
+              "offline",
+              "start",
+              "--inspect",
+              "--noPrependStageInUrl"
+            ],
+            "skipFiles": ["<node_internals>/**"],
+            "cwd": "${workspaceFolder}",
+            "outFiles": ["${workspaceFolder}/dist/**/*.js"],
+            "env": {
+              "IS_OFFLINE": "true"
+            }
+          },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Launch Serverless Offline",
+            "program": "${workspaceFolder}\\node_modules\\serverless\\bin\\serverless",
+            "args": [
+                "offline", "start", "--noTimeout"
+            ],
+            "runtimeExecutable": "node",
+            "env": {
+                "CLERK_PUBLISHABLE_KEY": "pk_test_Y29tbXVuYWwta29hbGEtMy5jbGVyay5hY2NvdW50cy5kZXYk",
+                "CLERK_SECRET_KEY": "sk_test_NKSegaLEpL1FO5DA9Ln70mn88Yyy9n4BcIQNPsMEqg"
+            },
+            "windows": {
+                "program": "${workspaceFolder}\\node_modules\\serverless\\bin\\serverless"
+            }
+            // "outFiles": [
+            //     "${workspaceFolder}/**/*.js"
+            // ]
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Whatever you want",
+            "program": "${workspaceFolder}/node_modules/serverless/bin/serverless",
+            "args": [
+                "offline", "start", "--httpPort", "3000", "--noTimeout"
+            ],
+            // "args": [
+            //   "invoke",
+            //   "local",
+            //   "--function",
+            //   "addTodo",
+            //   "--path",
+            //   "src/addTodo.ts"
+            // ],
+            "sourceMaps": true,
+            "preLaunchTask": "tsc: build - tsconfig.json",
+            "runtimeArgs": ["--lazy"],
+            "protocol": "inspector",
+            "runtimeExecutable": "node",
+            "env": {
+            },
+          },
+          {
+            "type": "node",
+            "request": "launch",
+            "name": "Debug Serverless Offline",
+            "cwd": "${workspaceFolder}",
+            "runtimeExecutable": "npm",
+            "runtimeArgs": ["run", "debug"],
+            "sourceMaps": true
+          },
+          {
+            "type": "node",
+            "request": "launch",
+            "name": "Debug Hello Function",
+            "program": "${workspaceFolder}/node_modules/serverless/bin/serverless",
+            "args": ["invoke", "local", "-f", "addTodo", "--data", "{}"],
+            "preLaunchTask": "tsc: build - tsconfig.json",
+            "outFiles": [
+                "${workspaceFolder}/.build/**/*.js"
+            ]
+          },
+          {
+            "type": "node",
+            "request": "launch",
+            "name": "Debug sls local",
+            "program": "${workspaceFolder}/node_modules/serverless/bin/serverless",
+            "args": [
+                "invoke", "local", "--function", "fetchTodos", "--path", "todos",
+                "--stage",
+                "nonprod",
+            ]
+        },
+        {
+            "name": "local-lambdas",
+            "type": "node",
+            "request": "launch",
+            "runtimeArgs": ["--inspect", "--debug-port=9229"],
+            "program": "${workspaceFolder}/node_modules/serverless/bin/serverless.js",
+            "args": ["offline"],
+            "console": "integratedTerminal",
+            "env": {
+              "AWS_PROFILE": "my_aws_profile",
+              "AWS_REGION": "ap-south-1",
+            }
+          },
+            {
+                "type": "node",
+                "request": "launch",
+                "name": "Debug Lambdas - Launch",
+                "sourceMaps": true,
+                "program": "${workspaceFolder}/node_modules/serverless/bin/serverless.js",
+                "args": [
+                    "offline",
+                    "--config", "serverless.yml", // or serverless.yml, whatever you use
+                    "--stage", "your-stage", "--noTimeout"
+                ],
+            }
+    
+    ]
+}

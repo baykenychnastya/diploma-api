@@ -1,0 +1,103 @@
+service: aws-node-rest-api
+frameworkVersion: '3'
+
+plugins:
+  - serverless-esbuild # used for compiling/packaging the Typescript code
+  - serverless-offline # used for local execution
+
+custom:
+   esbuild:
+    minify: false
+    sourcemap: linked
+    keepNames: true
+
+provider:
+  name: aws
+  environment:
+    NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: pk_test_Y29tbXVuYWwta29hbGEtMy5jbGVyay5hY2NvdW50cy5kZXYk
+    CLERK_SECRET_KEY: sk_test_NKSegaLEpL1FO5DA9Ln70mn88Yyy9n4BcIQNPsMEqg 
+  runtime: nodejs18.x
+  region: eu-west-2
+  iamRoleStatements:
+    - Effect: Allow
+      Action: 
+        - dynamodb:*
+      Resource: 
+        - arn:aws:dynamodb:eu-west-2:905418468090:table/TodoTable
+
+functions:
+  addTodo:
+    handler: src/addTodo.handler
+    events:
+      - httpApi:
+          path: /todos
+          method: post
+  updateTodo:
+    handler: src/updateTodo.handler
+    events:
+      - httpApi:
+          path: /todos/{id}
+          method: put
+  fetchTodos:
+    handler: src/fetchTodos.handler
+    events:
+      - httpApi:
+          path: /todos
+          method: get
+  fetchTodo:
+    handler: src/fetchTodo.handler
+    events:
+      - httpApi:
+          path: /todos/{id}
+          method: get
+  deleteTodo:
+    handler: src/deleteTodo.handler
+    events:
+      - httpApi:
+          path: /todos/{id}
+          method: delete
+  addTag:
+    handler: src/tags/addTag.handler
+    events:
+      - httpApi:
+          path: /tags
+          method: post
+  deleteTag:
+    handler: src/tags/deleteTag.handler
+    events:
+      - httpApi:
+          path: /tags/{id}
+          method: delete
+  getTags:
+    handler: src/tags/getTags.handler
+    events:
+      - httpApi:
+          path: /tags
+          method: get
+
+resources:
+  Resources:
+    TodoTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: TodoTable
+        BillingMode: PAY_PER_REQUEST
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+    Tags:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: Tags
+        BillingMode: PAY_PER_REQUEST
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+
+
